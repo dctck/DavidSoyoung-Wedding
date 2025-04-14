@@ -307,7 +307,7 @@
     .contact-name {
         font-weight: 700;
         font-size: 1.125rem;
-        margin-top: 0.25rem;
+        margin-top: 2rem; /* Currently 32px */
     }
     .contact-phone {
         font-weight: normal;
@@ -602,28 +602,21 @@
 
 
     // --- Copy Text Functionality ---
-    function copyToClipboardById(elementId, typeLabel = '텍스트') {
-        const elementToCopy = document.getElementById(elementId);
-        if (!elementToCopy) {
-            console.error("Element not found for ID:", elementId);
-            return;
-        };
+    function copyToClipboardById(elementId, typeLabel = '텍스트') { // Added default label
+      const elementToCopy = document.getElementById(elementId);
+      if (!elementToCopy) {
+          console.error("Element not found for ID:", elementId);
+          return;
+      };
 
-        let textToCopy = '';
-        if (elementId === 'groomPhone' || elementId === 'bridePhone') {
-            const bankNameElement = elementToCopy.previousElementSibling;
-            if (bankNameElement && bankNameElement.classList.contains('contact-phone') && bankNameElement.id !== 'groomPhone' && bankNameElement.id !== 'bridePhone') {
-                textToCopy += bankNameElement.textContent.trim() + ' ';
-            }
-            textToCopy += elementToCopy.textContent.trim();
-        } else {
-            textToCopy = elementToCopy.textContent.trim();
-        }
+      // === THIS LINE NOW DIRECTLY GETS ONLY THE TARGET ELEMENT'S TEXT ===
+      let textToCopy = elementToCopy.textContent.trim(); // Directly get text content
+      // === The old logic to add bank name was removed ===
 
-        if (!textToCopy) {
-            console.error("No text found to copy for ID:", elementId);
-            return;
-        }
+      if (!textToCopy) {
+          console.error("No text found to copy for ID:", elementId);
+          return;
+      }
 
         navigator.clipboard.writeText(textToCopy).then(() => {
             const snackbar = document.getElementById("snackbar");
